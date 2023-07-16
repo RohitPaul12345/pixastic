@@ -9,9 +9,9 @@
  *
  */
  
- var Pixastic = (function() {
+ let Pixastic = (function() {
 
-    var worker;
+    let worker;
 
     function createImageData(ctx, width, height) {
         if (ctx.createImageData) {
@@ -23,7 +23,7 @@
     
     function Pixastic(ctx, workerControlPath) {
 
-        var P = {},
+        let P = {},
             width = ctx.canvas.width, 
             height = ctx.canvas.height,
             queue = [],
@@ -46,7 +46,7 @@
             }
         }
             
-        for (var e in Pixastic.Effects) {
+        for (let e in Pixastic.Effects) {
             if (Pixastic.Effects.hasOwnProperty(e)) {
                 (function(e) {
                     P[e] = function(options) {
@@ -58,7 +58,7 @@
                     }
 
                     P.done = function(callback, progress) {
-                        var inData, outData;
+                        let inData, outData;
                         
                         try {
                             inData = ctx.getImageData(0, 0, width, height);
@@ -81,7 +81,7 @@
                         });
                         
                         worker.onmessage = function(message) {
-                            var d = message.data;
+                            let d = message.data;
                             switch (d.event) {
                                 case "done" : 
                                     ctx.putImageData(d.data, 0, 0);
@@ -114,17 +114,17 @@
 
 
     Pixastic.Worker = function() {
-        var me = this;
+        let me = this;
         function processMessage(data) {
-            var queue = data.queue,
+            let queue = data.queue,
                 inData = data.inData,
                 outData = data.outData,
                 width = data.width,
                 height = data.height,
                 tmpData;
 
-            for (var i=0;i<queue.length;i++) {
-                var e = queue[i].effect,
+            for (let i=0;i<queue.length;i++) {
+                let e = queue[i].effect,
                     options = queue[i].options,
                     progressCallback;
 
@@ -183,7 +183,7 @@
     };
     
     function toCanvas(o) {
-        var canvas;
+        let canvas;
         if (typeof o == "object") {
             if (typeof o.tagName == "string") {
                 if (o.tagName.toLowerCase() == "canvas" || o.tagName.toLowerCase() == "img") {
@@ -204,7 +204,7 @@
     };
     
     function toImage(o) {
-        var canvas = toCanvas(o),
+        let canvas = toCanvas(o),
             image = new Image();
         image.width = canvas.width;
         image.height = canvas.height;
@@ -213,13 +213,13 @@
     };
     
     function toImageData(o) {
-        var canvas = toCanvas(o),
+        let canvas = toCanvas(o),
             ctx = canvas.getContext("2d");
         return ctx.getImageData(0, 0, canvas.width, canvas.height);
     };
     
     function histogram(imageData) {
-        var values = [],
+        let values = [],
             i, p,
             data = imageData.data,
             round = Math.round,
